@@ -66,6 +66,7 @@ nest new backend-init
 ### run the application
 
 ```
+# cd ⁓/applications/backend-init/
 # sudo npm run build
 # sudo pm2 start pnpm --name "backend-init" -- start
 ```
@@ -75,28 +76,6 @@ nest new backend-init
 | ipv4 | mask | gateway|
 |------|------|--------|
 | 192.168.154.3 | /24 | 192.168.154.1 |
-
-
-### network config - needs internet to install tools, bridge and custom adapter need it
-
-```terminal
-sudo tee /etc/netplan/namefile.yaml > /dev/null <<EOF
-network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    inter1:
-      addresses:
-        - 192.168.154.3/24 #desired ip
-      gateway4: 192.168.154.1
-      nameservers:
-        addresses:
-          - 8.8.8.8
-          - 8.8.4.4
-    inter2:
-      dhcp4: true
-EOF
-```
 
 ### if custom gateway ip appears as default delete it from routing table.
 
@@ -108,13 +87,7 @@ EOF
   sudo ip route del default via <custom-gateway-ip>
 ```
 
-### tools install (incase so without curves)
-
-``` terminal
-sudo apt install nano vim grep
-```
-
-### Install nginx
+### Install nginx and ufw
 
 ``` terminal
 sudo apt install nginx ufw
@@ -196,6 +169,12 @@ Copy the created file running this command:
 $ sudo ln -s /etc/nginx/sites-available/domainname /etc/nginx/sites-enabled/
 ```
 
+Check if syntax in domainname file is correct
+
+```
+$ sudo nginx -t
+```
+
 Restart nginx server
 
 ```
@@ -238,5 +217,13 @@ sudo mkdir applications
 ### create a nextjs project or make a git pull from some repository
 ``` terminal
 cd ⁓/applications/
-npx create-next-app@latest init
+npx create-next-app@latest client-init
+```
+
+### run the application
+
+```
+# cd ⁓/applications/client-init/
+# sudo npm run build
+# sudo pm2 start pnpm --name "client-init" -- start
 ```
