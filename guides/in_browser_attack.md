@@ -310,6 +310,23 @@ sudo apt install xfce4 xfce4-goodies
 sudo apt install tightvncserver
 ```
 
+⚠️ __We have to modify the ⁓/.vnc/xstartup and add this line__ ⚠️
+```bash
+#!/bin/sh
+xrdb $HOME/.Xresources
+startxfce4 &
+```
+
+> Allow the vnc port with ufw
+```terminal
+sudo ufw allow 5901/tcp
+```
+
+> Set a vnc password running 
+```terminal
+vncpasswd
+```
+
 > To start the vnc server we have to run:
 ```
 tightvncserver -geometry 1920x1080 -depht 30
@@ -335,6 +352,10 @@ tightvncserver -kill <desktop-created>
 sudo apt install novnc
 ```
 
+Allow the http port with ufw
+```terminal
+sudo ufw allow 80/tcp
+```
 __We have to find the novnc_proxy location, in some cases we could find it in: /usr/share/novnc/utils/novnc_proxy and tell it to listen in port 80 and where is running our vnc server.__ 
 
 ```
@@ -347,7 +368,13 @@ We have to install a browser on out cloud machine, i will use firefox and run it
 
 ```terminal
 sudo apt install firefox-esr 
-firefox --kiosk https://mail.google.com
+firefox --kiosk <website we are spoofing>
+```
+
+⚠️ If you cannot run firefox, because is not detecting some display, run this:
+
+```terminal
+export DISPLAY=:1
 ```
 
 and we will modify the novnc html file to improve our window view.
@@ -380,3 +407,8 @@ nano /usr/share/novnc/vnc_lite.html
    }
 </style>
 ```
+
+----
+
+### Now we can visit the url to watch the result.
+http://<MACHINE_IP>/vnc_lite.html?autoconnect=true&password=<password>&quality=9&scale=true
